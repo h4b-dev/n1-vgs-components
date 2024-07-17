@@ -81,7 +81,6 @@ Additionally, the texts for the label can be personalized with this prop:
     formAction: 'Agregar tarjeta',
   }
 ```
-- 
 
 ## Development
 
