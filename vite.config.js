@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import { defineConfig } from 'vite'
 import { fileURLToPath, URL } from 'url'
 import { dirname } from 'path'
@@ -14,9 +13,7 @@ const _dirname =
 export default defineConfig({
   css: {
     // transformer: 'lightningcss',
-    modules: {
-      localsConvention: 'camelCaseOnly',
-    },
+    modules: true,
   },
   build: {
     copyPublicDir: true,
@@ -27,7 +24,7 @@ export default defineConfig({
       formats: ['es'],
     },
     rollupOptions: {
-      external: ['react', 'react/jsx-runtime'],
+      external: ['react', 'react/jsx-runtime', 'react-dom'],
       output: {
         assetFileNames: 'assets/[name][extname]',
         entryFileNames: '[name].js',
@@ -58,4 +55,7 @@ export default defineConfig({
     // tailwindcss(),
     react(),
   ],
+  define: {
+    'process.env': 'import.meta.env'
+  }
 })

@@ -4,14 +4,18 @@ import { loadVGSCollect } from '@vgs/collect-js'
 import { styles } from './CollectForm.module.css'
 
 const { TextField, CardNumberField, CardExpirationDateField, CardSecurityCodeField } = VGSCollectForm
-const { VITE_VAULT_ID, VITE_ENVIRONMENT, VITE_COLLECT_VERSION, VITE_CREATE_API_ACTION } = import.meta.env
+
+const VAULT_ID = String(import.meta.env.VITE_VGS_VAULT_ID)
+const ENVIRONMENT = String(import.meta.env.VITE_VGS_ENVIRONMENT)
+const COLLECT_VERSION = String(import.meta.env.VITE_VGS_COLLECT_VERSION)
+const CREATE_ACTION = String(import.meta.env.VITE_VGS_CREATE_ACTION)
 
 const VGSCollectFieldStyles = {
   fontFamily: 'Inter, Arial, sans-serif',
   padding: '.5rem 1rem',
   boxSizing: 'border-box',
   '&::placeholder': {
-    color: '#555',
+    color: '#777',
   },
 }
 
@@ -50,9 +54,9 @@ const CollectForm = ({
   return (
     <div className={styles}>
       <VGSCollectForm
-        vaultId={VITE_VAULT_ID}
-        environment={VITE_ENVIRONMENT}
-        action={VITE_CREATE_API_ACTION}
+        vaultId={VAULT_ID}
+        environment={ENVIRONMENT}
+        action={CREATE_ACTION}
         tokenizationAPI={false}
         submitParameters={{
           headers: {
@@ -142,9 +146,9 @@ const WrappedForm = (props) => {
 
   useEffect(() => {
     loadVGSCollect({
-      vaultId: VITE_VAULT_ID,
-      environment: VITE_ENVIRONMENT,
-      version: VITE_COLLECT_VERSION,
+      vaultId: VAULT_ID,
+      environment: ENVIRONMENT,
+      version: COLLECT_VERSION,
     })
       .then(() => {
         setCollectScriptLoaded(true)

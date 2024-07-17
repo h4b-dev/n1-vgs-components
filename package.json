@@ -1,18 +1,26 @@
 {
-  "name": "@h4b-dev/n1vgs",
+  "name": "@h4b-dev/n1-vgs-components",
+  "description": "components for secure checkout",
   "version": "0.0.1",
   "type": "module",
   "module": "dist/index.js",
   "main": "dist/index.js",
+  "source": "src/index.js",
   "files": [
     "dist"
+  ],
+  "browserslist": [
+    "> 1%",
+    "not dead",
+    "not op_mini all",
+    "last 2 years"
   ],
   "sideEffects": [
     "**/*.css"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/h4b-dev/n1vgs.git"
+    "url": "git@github.com:h4b-dev/n1-vgs-components.git"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
@@ -21,17 +29,16 @@
     "dev": "ladle serve",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "deploy": "bun install && rm -rf dist node_modules/react node_modules/react-dom && bun run build && npm publish"
   },
   "dependencies": {
     "@vgs/collect-js": "0.6.3",
     "@vgs/collect-js-react": "1.1.0",
-    "classnames": "2.3.2",
-    "flowbite-react": "^0.10.1",
-    "ladle": "^0.0.0",
-    "postcss-import": "16.1.0"
+    "postcss-import": "16.1.0",
+    "vite": "^5.3.4"
   },
   "devDependencies": {
+    "ladle": "^0.0.0",
     "@ladle/react": "^4.0.1",
     "@vitejs/plugin-react-swc": "^3.5.0",
     "autoprefixer": "^10.4.19",
@@ -45,8 +52,10 @@
     "eslint-plugin-react-refresh": "^0.4.4",
     "postcss": "^8.4.39",
     "prettier": "^3.1.0",
-    "prop-types": "^15.8.1",
-    "tailwindcss": "^3.4.6",
-    "vite": "^5.0.0"
+    "prop-types": "^15.8.1"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
   }
 }

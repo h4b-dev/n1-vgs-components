@@ -31,6 +31,23 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
+
+      > div {
+        width: 100%;
+        display: block;
+        height: 50px;
+        border: 1px solid lightgrey;
+        border-radius: 4px;
+        padding: 0 20px;
+        box-sizing: border-box;
+
+        > iframe {
+          font-family: Inter, Arial, sans-serif;
+          box-sizing: border-box;
+          width: 100%;
+          height: 100%;
+        }
+      }
     }
 
     label {
@@ -53,15 +70,17 @@
     height: 40px;
     line-height: 38px;
     outline: none;
+    cursor: pointer;
 
     &[disabled] {
       background: #c2c2c2;
     }
-    
+
     &:not(:disabled) {
       &:focus, &:active {
         background: #35c2a1;
       }
     }
   }
+
 }
