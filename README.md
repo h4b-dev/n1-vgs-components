@@ -70,6 +70,18 @@ The CollectForm component accepts the following props:
 - onUpdate (function, optional): Callback function that is called when the form state is updated. It receives one argument: state.
 - onError (function, optional): Callback function that is called when there is an error. It receives one argument: errors.
 
+Additionally, the texts for the label can be personalized with this prop:
+
+```jsx
+  localeLbl = {
+    cardName: 'Nombre de la tarjeta',
+    cardNumber: 'Número de tarjeta',
+    cardExp: 'Vencimiento',
+    cardCVV: 'CVV',
+    formAction: 'Agregar tarjeta',
+  }
+```
+- 
 
 ## Development
 
