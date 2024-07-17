@@ -70,6 +70,25 @@ The CollectForm component accepts the following props:
 - onUpdate (function, optional): Callback function that is called when the form state is updated. It receives one argument: state.
 - onError (function, optional): Callback function that is called when there is an error. It receives one argument: errors.
 
+
+## Development
+
+To run the development environment for the library, checkout and use:
+
+```bash
+bun install
+# then
+bun run dev
+```
+
+## Deployment
+
+A script is provided for ease of deploy, but it requires correctly configured access to the repository.
+
+```bash
+bun run deploy
+```
+
 ## License
 
 This project is licensed under the MIT License. See the LICENSE file for details.
