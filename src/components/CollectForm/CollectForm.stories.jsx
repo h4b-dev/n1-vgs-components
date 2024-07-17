@@ -21,9 +21,7 @@ export const Default = () => (
     }}
     onError={(errors) => {
       // this will be called if the submit button is pressed but there are errors in the form
-      // should not happen.
-      // I'm leaving this here in case it gets called for another reason
-      // might delete later
+      // it will also be called on more generic errors, such as the collect-js module failing to load
       console.log('onError:errors', errors)
     }}
   />

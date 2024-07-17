@@ -1,13 +1,6 @@
 import { defineConfig } from 'vite'
 import { fileURLToPath, URL } from 'url'
-import { dirname } from 'path'
 import react from '@vitejs/plugin-react-swc'
-import { resolve } from 'path'
-
-const _dirname =
-  typeof __dirname !== 'undefined'
-    ? __dirname
-    : dirname(fileURLToPath(import.meta.url))
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -19,7 +12,7 @@ export default defineConfig({
     copyPublicDir: true,
     cssCodeSplit: true,
     lib: {
-      entry: resolve(_dirname, 'src/components/index.js'),
+      entry: './src/index.js',
       name: 'n1vgs',
       formats: ['es'],
     },
