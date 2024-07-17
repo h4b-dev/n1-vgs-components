@@ -1,0 +1,52 @@
+{
+  "name": "@h4b-dev/n1vgs",
+  "version": "0.0.1",
+  "type": "module",
+  "module": "dist/index.js",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/h4b-dev/n1vgs.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "scripts": {
+    "dev": "ladle serve",
+    "build": "vite build",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@vgs/collect-js": "0.6.3",
+    "@vgs/collect-js-react": "1.1.0",
+    "classnames": "2.3.2",
+    "flowbite-react": "^0.10.1",
+    "ladle": "^0.0.0",
+    "postcss-import": "16.1.0"
+  },
+  "devDependencies": {
+    "@ladle/react": "^4.0.1",
+    "@vitejs/plugin-react-swc": "^3.5.0",
+    "autoprefixer": "^10.4.19",
+    "eslint": "^8.53.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-import-resolver-vite": "^1.3.1",
+    "eslint-plugin-import": "^2.29.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.4",
+    "postcss": "^8.4.39",
+    "prettier": "^3.1.0",
+    "prop-types": "^15.8.1",
+    "tailwindcss": "^3.4.6",
+    "vite": "^5.0.0"
+  }
+}
