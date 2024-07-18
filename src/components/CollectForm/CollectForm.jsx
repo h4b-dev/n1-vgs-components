@@ -5,8 +5,6 @@ import { styles } from './CollectForm.module.css'
 
 const { TextField, CardNumberField, CardExpirationDateField, CardSecurityCodeField } = VGSCollectForm
 
-const VAULT_ID = String(import.meta.env.VITE_VGS_VAULT_ID)
-const ENVIRONMENT = String(import.meta.env.VITE_VGS_ENVIRONMENT)
 const COLLECT_VERSION = String(import.meta.env.VITE_VGS_COLLECT_VERSION)
 const CREATE_ACTION = String(import.meta.env.VITE_VGS_CREATE_ACTION)
 
@@ -19,6 +17,24 @@ const VGSCollectFieldStyles = {
   },
 }
 
+const ENV_CONFIG = {
+  dev: {
+    vaultId: import.meta.env.VITE_VGS_DEV_VAULT_ID,
+    environment: import.meta.env.VITE_VGS_DEV_ENVIRONMENT,
+    cname: import.meta.env.VITE_VGS_DEV_CNAME,
+  },
+  sandbox: {
+    vaultId: import.meta.env.VITE_VGS_SANDBOX_VAULT_ID,
+    environment: import.meta.env.VITE_VGS_SANDBOX_ENVIRONMENT,
+    cname: import.meta.env.VITE_VGS_SANDBOX_CNAME,
+  },
+  prod: {
+    vaultId: import.meta.env.VITE_VGS_PROD_VAULT_ID,
+    environment: import.meta.env.VITE_VGS_PROD_ENVIRONMENT,
+    cname: import.meta.env.VITE_VGS_PROD_CNAME,
+  }
+}
+
 const CollectForm = ({
   localeLbl = {
     cardName: 'Nombre de la tarjeta',
@@ -28,9 +44,8 @@ const CollectForm = ({
     formAction: 'Agregar tarjeta',
   },
   validCardBrands = [{ type: 'visa' }, { type: 'mastercard' }],
-  customerId = null,
-  appId = null,
-  apiKey = null,
+  token = '',
+  environment = 'dev', // dev, sandbox, prod
   onSubmit = () => {},
   onUpdate = () => {},
   onError = () => {},
@@ -38,7 +53,7 @@ const CollectForm = ({
   const [state] = useVGSCollectState()
 
   const onSubmitCallback = (status, response) => {
-    onSubmit(status?.data?.id ?? null, status, response)
+    onSubmit(response?.data?.id ?? null, status, response)
   }
 
   const onUpdateCallback = (state) => {
@@ -54,13 +69,12 @@ const CollectForm = ({
   return (
     <div className={styles}>
       <VGSCollectForm
-        vaultId={VAULT_ID}
-        environment={ENVIRONMENT}
+        {...ENV_CONFIG[environment]}
         action={CREATE_ACTION}
         tokenizationAPI={false}
         submitParameters={{
           headers: {
-            'x-api-key': apiKey,
+            Authorization: `Bearer ${token}`,
           },
           data: (fields) => ({
             Name: fields['Name'],
@@ -68,10 +82,10 @@ const CollectForm = ({
             BinNumber: state.Number.bin,
             LastFour: state.Number.last4,
             ExpirationDate: fields['ExpirationDate'],
+            CustomerId: 'dennis7',
+            AppId: 'fake-app',
             Cvv: fields['Cvv'],
             Brand: state.Number.cardType,
-            CustomerId: customerId,
-            AppId: appId,
             Enabled: true,
             Blocked: false,
           }),
@@ -105,7 +119,7 @@ const CollectForm = ({
               name="ExpirationDate"
               type="card-expiration-date"
               validations={['required', 'validCardExpirationDate']}
-              yearLength={4}
+              yearLength={2}
               css={VGSCollectFieldStyles}
               placeholder="12/24"
               showCardIcon={{
@@ -146,8 +160,7 @@ const WrappedForm = (props) => {
 
   useEffect(() => {
     loadVGSCollect({
-      vaultId: VAULT_ID,
-      environment: ENVIRONMENT,
+      ...ENV_CONFIG[props.environment || 'dev'],
       version: COLLECT_VERSION,
     })
       .then(() => {
