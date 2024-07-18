@@ -39,9 +39,8 @@ function App() {
   return (
     <div className="new-card">
       <CollectForm
-        customerId="<your-customer-id>"
-        appId="<your-app-id>"
-        apiKey="<your-api-key>"
+        token="<your-users-token>"
+        environment="<your-env>"
         onSubmit={(id, httpStatus, httpResponse) => {
           console.log('onSubmit:id', id) // This will be null if the request is in error
           console.log('onSubmit:httpStatus', httpStatus) // Generally 200 or 400
@@ -63,9 +62,8 @@ function App() {
 
 The CollectForm component accepts the following props:
 
-- customerId (string, required): The customer ID.
-- appId (string, required): The application ID.
-- apiKey (string, required): The API key for authentication.
+- token (string, required): auth0 user token.
+- environment (one of: [dev, sandbox, prod]): your environment. It will change the vault and vgs cname for the proxy.
 - onSubmit (function, required): Callback function that is called when the form is submitted. It receives three arguments: id, httpStatus, and httpResponse.
 - onUpdate (function, optional): Callback function that is called when the form state is updated. It receives one argument: state.
 - onError (function, optional): Callback function that is called when there is an error. It receives one argument: errors.
