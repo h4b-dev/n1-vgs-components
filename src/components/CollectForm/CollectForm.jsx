@@ -32,7 +32,7 @@ const ENV_CONFIG = {
     vaultId: import.meta.env.VITE_VGS_PROD_VAULT_ID,
     environment: import.meta.env.VITE_VGS_PROD_ENVIRONMENT,
     cname: import.meta.env.VITE_VGS_PROD_CNAME,
-  }
+  },
 }
 
 const CollectForm = ({
@@ -51,8 +51,10 @@ const CollectForm = ({
   onError = () => {},
 }) => {
   const [state] = useVGSCollectState()
+  const [isFormLoading, setIsFormLoading] = useState(false)
 
   const onSubmitCallback = (status, response) => {
+    setIsFormLoading(false)
     onSubmit(response?.data?.id ?? null, status, response)
   }
 
@@ -64,7 +66,25 @@ const CollectForm = ({
     onError(errors)
   }
 
-  const isValid = !!state && Object.values(state).every((i) => i.isValid)
+  const isValid = !!state && Object.values(state).every((i) => i.isValid) && !isFormLoading
+
+  useEffect(() => {
+    const form = document.querySelector('form')
+
+    if (form) {
+      const handleSubmit = (event) => {
+        event.preventDefault()
+        setIsFormLoading(true)
+      }
+
+      form.addEventListener('submit', handleSubmit)
+
+      return () => {
+        form.removeEventListener('submit', handleSubmit)
+      }
+    }
+    return () => {}
+  }, [])
 
   return (
     <div className={styles}>
