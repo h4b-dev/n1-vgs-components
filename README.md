@@ -42,16 +42,21 @@ function App() {
         token="<your-users-token>"
         environment="<your-env>"
         onSubmit={(id, httpStatus, httpResponse) => {
-          console.log('onSubmit:id', id) // This will be null if the request is in error
-          console.log('onSubmit:httpStatus', httpStatus) // Generally 200 or 400
-          console.log('onSubmit:httpResponse', httpResponse) // Raw HTTP response from tokenization
+          // This will be null if the request is in error
+          console.log('onSubmit:id', id)
+          // Generally 200 or 400
+          console.log('onSubmit:httpStatus', httpStatus)
+          // Raw HTTP response from tokenization
+          console.log('onSubmit:httpResponse', httpResponse)
         }}
+        { /* optional properties:
         onUpdate={(state) => {
           console.log('onUpdate:state', state)
         }}
         onError={(errors) => {
           console.log('onError:errors', errors)
         }}
+        */ }
       />
     </div>
   )

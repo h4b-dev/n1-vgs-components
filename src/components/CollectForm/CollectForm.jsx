@@ -82,8 +82,6 @@ const CollectForm = ({
             BinNumber: state.Number.bin,
             LastFour: state.Number.last4,
             ExpirationDate: fields['ExpirationDate'],
-            CustomerId: 'dennis7',
-            AppId: 'fake-app',
             Cvv: fields['Cvv'],
             Brand: state.Number.cardType,
             Enabled: true,
