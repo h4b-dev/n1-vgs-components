@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { VGSCollectForm, VGSCollectProvider, useVGSCollectState } from '@vgs/collect-js-react'
 import { loadVGSCollect } from '@vgs/collect-js'
 import { styles } from './CollectForm.module.css'
@@ -51,6 +51,7 @@ const CollectForm = ({
   onError = () => {},
 }) => {
   const [state] = useVGSCollectState()
+  const formContainerRef = useRef(null)
   const [isFormLoading, setIsFormLoading] = useState(false)
 
   const onSubmitCallback = (status, response) => {
@@ -69,7 +70,7 @@ const CollectForm = ({
   const isValid = !!state && Object.values(state).every((i) => i.isValid) && !isFormLoading
 
   useEffect(() => {
-    const form = document.querySelector('form')
+    const form = formContainerRef?.current?.querySelector('form')
 
     if (form) {
       const handleSubmit = (event) => {
@@ -87,7 +88,7 @@ const CollectForm = ({
   }, [])
 
   return (
-    <div className={styles}>
+    <div className={styles} ref={formContainerRef}>
       <VGSCollectForm
         {...ENV_CONFIG[environment]}
         action={CREATE_ACTION}
