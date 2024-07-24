@@ -37,7 +37,7 @@ const ENV_CONFIG = {
 
 const CollectForm = ({
   localeLbl = {
-    cardName: 'Nombre de la tarjeta',
+    cardName: 'Nombre en la tarjeta',
     cardNumber: 'Número de tarjeta',
     cardExp: 'Vencimiento',
     cardCVV: 'CVV',
