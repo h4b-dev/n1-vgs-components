@@ -67,8 +67,6 @@ const CollectForm = ({
     onError(errors)
   }
 
-  const isValid = !!state && Object.values(state).every((i) => i.isValid) && !isFormLoading
-
   useEffect(() => {
     const form = formContainerRef?.current?.querySelector('form')
 
@@ -86,6 +84,8 @@ const CollectForm = ({
     }
     return () => {}
   }, [])
+
+  const isValid = !!state && Object.values(state).every((i) => i.isValid)
 
   return (
     <div className={styles} ref={formContainerRef}>
@@ -166,7 +166,7 @@ const CollectForm = ({
             />
           </div>
         </div>
-        <button type="submit" disabled={!isValid}>
+        <button type="submit" disabled={!isValid || isFormLoading}>
           {localeLbl.formAction}
         </button>
       </VGSCollectForm>

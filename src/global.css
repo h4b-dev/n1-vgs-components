@@ -1,6 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
 
-::placeholder {
+::placeholder,
+::-webkit-input-placeholder,
+:-moz-placeholder,
+::-moz-placeholder,
+:-ms-input-placeholder,
+::-ms-input-placeholder {
   color: #ccc;
-  opacity: 1; /* Firefox */
+  opacity: 1;
 }
+
