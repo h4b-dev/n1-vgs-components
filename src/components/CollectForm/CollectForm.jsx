@@ -121,6 +121,7 @@ const CollectForm = ({
           <CardNumberField
             name="Number"
             type="card-number"
+            validations={['required', 'validCardNumber']}
             css={VGSCollectFieldStyles}
             placeholder="XXXX XXXX XXXX XXXX"
             showCardIcon={{
@@ -162,7 +163,7 @@ const CollectForm = ({
               placeholder="•••"
               successColor="#4F8A10"
               errorColor="#D8000C"
-              tokenization={{ format: 'UUID', storage: 'VOLATILE' }}
+              tokenization={{ format: 'UUID', storage: 'PERSISTENT' }}
             />
           </div>
         </div>
