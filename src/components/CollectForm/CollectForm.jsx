@@ -121,6 +121,7 @@ const CollectForm = ({
           <CardNumberField
             name="Number"
             type="card-number"
+            validations={['required', 'validCardNumber']}
             css={VGSCollectFieldStyles}
             placeholder="XXXX XXXX XXXX XXXX"
             showCardIcon={{
