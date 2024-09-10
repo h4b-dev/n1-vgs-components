@@ -129,7 +129,6 @@ const CollectForm = ({
             }}
             errorColor={'#D8000C'}
             validCardBrands={validCardBrands}
-            tokenization={{ format: 'UUID', storage: 'PERSISTENT' }}
           />
         </div>
         <div className="input-row">
@@ -163,7 +162,6 @@ const CollectForm = ({
               placeholder="•••"
               successColor="#4F8A10"
               errorColor="#D8000C"
-              tokenization={{ format: 'UUID', storage: 'VOLATILE' }}
             />
           </div>
         </div>
