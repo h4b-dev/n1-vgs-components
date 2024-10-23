@@ -1,0 +1,14 @@
+name: CI
+
+on:
+  push:
+    branches: [ develop, feature/sdl ]
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+  trivy-scan:
+    uses: h4b-dev/n1-gh-reusable-workflows/.github/workflows/trivy-nodejs-scan-workflow.yml@main
+    with:
+      node-version: '18'
+      scan-path: '.'
