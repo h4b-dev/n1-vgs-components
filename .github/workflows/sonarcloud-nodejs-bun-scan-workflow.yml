@@ -65,7 +65,7 @@ jobs:
             -Dsonar.tests=src/test
             -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
             -Dsonar.test.inclusions=**/*.test.js,**/*.test.ts,**/*.spec.js,**/*.spec.ts
-            -Dsonar.exclusions=**/node_modules/**,**/coverage/**,**/dist/**,**/build/**,.wrangler/**,**/.git/**
+            -Dsonar.exclusions=/node_modules/,/coverage/,/dist/,/build/,.wrangler/,/.git/,/tests/,/src/test/**
             -Dsonar.sourceEncoding=UTF-8
             -Dsonar.javascript.file.suffixes=.js,.jsx
             -Dsonar.typescript.file.suffixes=.ts,.tsx
