@@ -35,6 +35,31 @@ const ENV_CONFIG = {
   },
 }
 
+export const onSubmitCallback = (setIsFormLoading, onSubmit) => (status, response) => {
+  setIsFormLoading(false)
+  onSubmit(response?.data?.id ?? null, status, response)
+}
+
+export const onUpdateCallback = (onUpdate) => (state) => {
+  onUpdate(state)
+}
+
+export const onErrorCallback = (onError) => (errors) => {
+  onError(errors)
+}
+
+export const formatSubmitData = (fields, state) => ({
+  Name: fields['Name'],
+  Number: fields['Number'],
+  BinNumber: state.Number.bin,
+  LastFour: state.Number.last4,
+  ExpirationDate: fields['ExpirationDate'],
+  Cvv: fields['Cvv'],
+  Brand: state.Number.cardType,
+  Enabled: true,
+  Blocked: false,
+})
+
 const CollectForm = ({
   localeLbl = {
     cardName: 'Nombre en la tarjeta',
@@ -54,19 +79,6 @@ const CollectForm = ({
   const formContainerRef = useRef(null)
   const [isFormLoading, setIsFormLoading] = useState(false)
 
-  const onSubmitCallback = (status, response) => {
-    setIsFormLoading(false)
-    onSubmit(response?.data?.id ?? null, status, response)
-  }
-
-  const onUpdateCallback = (state) => {
-    onUpdate(state)
-  }
-
-  const onErrorCallback = (errors) => {
-    onError(errors)
-  }
-
   useEffect(() => {
     const form = formContainerRef?.current?.querySelector('form')
 
@@ -82,7 +94,6 @@ const CollectForm = ({
         form.removeEventListener('submit', handleSubmit)
       }
     }
-    return () => {}
   }, [])
 
   const isValid = !!state && Object.values(state).every((i) => i.isValid)
@@ -97,21 +108,11 @@ const CollectForm = ({
           headers: {
             Authorization: `Bearer ${token}`,
           },
-          data: (fields) => ({
-            Name: fields['Name'],
-            Number: fields['Number'],
-            BinNumber: state.Number.bin,
-            LastFour: state.Number.last4,
-            ExpirationDate: fields['ExpirationDate'],
-            Cvv: fields['Cvv'],
-            Brand: state.Number.cardType,
-            Enabled: true,
-            Blocked: false,
-          }),
+          data: (fields) => formatSubmitData(fields, state),
         }}
-        onUpdateCallback={onUpdateCallback}
-        onSubmitCallback={onSubmitCallback}
-        onErrorCallback={onErrorCallback}>
+        onUpdateCallback={onUpdateCallback(onUpdate)}
+        onSubmitCallback={onSubmitCallback(setIsFormLoading, onSubmit)}
+        onErrorCallback={onErrorCallback(onError)}>
         <div className="input">
           <label>{localeLbl.cardName}</label>
           <TextField name="Name" validations={['required']} css={VGSCollectFieldStyles} placeholder=" " />
@@ -200,4 +201,4 @@ const WrappedForm = (props) => {
 }
 
 export default WrappedForm
-export { CollectForm }
+export { CollectForm, onSubmitCallback, onUpdateCallback, onErrorCallback, formatSubmitData }
