@@ -2,13 +2,13 @@ name: CI
 
 on:
   push:
-    branches: [ develop, feature/sdl ]
+    branches: [develop, feature/sdl]
   pull_request:
-    branches: [ develop ]
+    branches: [develop]
 
 jobs:
   trivy-scan:
-    uses: h4b-dev/n1-gh-reusable-workflows/.github/workflows/trivy-nodejs-scan-workflow.yml@main
+    uses: h4b-dev/n1-gh-reusable-workflows/.github/workflows/trivy-nodejs-bun-scan-workflow.yml@main
     with:
-      node-version: '18'
-      scan-path: '.'
+      node-version: "18"
+      scan-path: "."
