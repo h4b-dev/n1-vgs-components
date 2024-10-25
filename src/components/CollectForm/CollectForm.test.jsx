@@ -4,6 +4,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { loadVGSCollect } from '@vgs/collect-js'
 import { useVGSCollectState } from '@vgs/collect-js-react'
 import CollectForm from './CollectForm'
+import { onSubmitCallback, onUpdateCallback, onErrorCallback } from './CollectForm'
 
 const mockProps = {
   token: 'test-token',
@@ -111,3 +112,98 @@ describe('CollectForm', () => {
   })
 })
 
+describe('Callback functions', () => {
+  it('onSubmitCallback handles successful submission', () => {
+    const setIsFormLoading = vi.fn()
+    const onSubmit = vi.fn()
+    const status = 'success'
+    const response = { data: { id: '123' } }
+
+    onSubmitCallback(setIsFormLoading, onSubmit)(status, response)
+
+    expect(setIsFormLoading).toHaveBeenCalledWith(false)
+    expect(onSubmit).toHaveBeenCalledWith('123', status, response)
+  })
+
+  it('onSubmitCallback handles submission without id', () => {
+    const setIsFormLoading = vi.fn()
+    const onSubmit = vi.fn()
+    const status = 'success'
+    const response = { data: {} }
+
+    onSubmitCallback(setIsFormLoading, onSubmit)(status, response)
+
+    expect(setIsFormLoading).toHaveBeenCalledWith(false)
+    expect(onSubmit).toHaveBeenCalledWith(null, status, response)
+  })
+
+  it('onUpdateCallback calls onUpdate with state', () => {
+    const onUpdate = vi.fn()
+    const state = { field1: { isValid: true }, field2: { isValid: false } }
+
+    onUpdateCallback(onUpdate)(state)
+
+    expect(onUpdate).toHaveBeenCalledWith(state)
+  })
+
+  it('onErrorCallback calls onError with errors', () => {
+    const onError = vi.fn()
+    const errors = [{ field: 'cardNumber', message: 'Invalid card number' }]
+
+    onErrorCallback(onError)(errors)
+
+    expect(onError).toHaveBeenCalledWith(errors)
+  })
+})
+
+describe('Form submission', () => {
+  it('disables submit button during form submission', async () => {
+    render(<CollectForm {...mockProps} />)
+
+    // First, we need to make the form valid
+    vi.mocked(useVGSCollectState).mockReturnValue([
+      {
+        Name: { isValid: true },
+        Number: { isValid: true, bin: '123456', last4: '4242', cardType: 'visa' },
+        ExpirationDate: { isValid: true },
+        Cvv: { isValid: true },
+      },
+    ])
+
+    // Wait for the form to be rendered and become valid
+    await waitFor(() => {
+      const submitButton = screen.getByRole('button', { name: /agregar tarjeta/i })
+      expect(submitButton).not.toBeDisabled()
+    })
+
+    // Trigger form submission
+    const form = screen.getByTestId('vgs-form')
+    fireEvent.submit(form)
+
+    // Check if the button is disabled after submission
+    await waitFor(() => {
+      const submitButton = screen.getByRole('button', { name: /agregar tarjeta/i })
+      expect(submitButton).toBeDisabled()
+    })
+  })
+})
+
+describe('Environment configuration', () => {
+  it('uses correct environment configuration', async () => {
+    const envProps = {
+      ...mockProps,
+      environment: 'sandbox',
+    }
+
+    render(<CollectForm {...envProps} />)
+
+    await waitFor(() => {
+      expect(loadVGSCollect).toHaveBeenCalledWith(expect.objectContaining({
+        vaultId: import.meta.env.VITE_VGS_SANDBOX_VAULT_ID,
+        environment: import.meta.env.VITE_VGS_SANDBOX_ENVIRONMENT,
+        cname: import.meta.env.VITE_VGS_SANDBOX_CNAME,
+        version: String(import.meta.env.VITE_VGS_COLLECT_VERSION),
+      }))
+    })
+  })
+})
