@@ -103,6 +103,15 @@ A script is provided for ease of deploy, but it requires correctly configured ac
 bun run deploy
 ```
 
+## Testing
+
+Testing must be done with npm
+
+```bash
+npm test
+npm run test:coverage
+```
+
 ## License
 
 This project is licensed under the MIT License. See the LICENSE file for details.
