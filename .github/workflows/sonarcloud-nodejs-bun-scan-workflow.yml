@@ -1,0 +1,79 @@
+name: SonarCloud Quality Code Analysis
+on:
+  workflow_call:
+    inputs:
+      sonar-project-key:
+        required: true
+        type: string
+        description: "SonarCloud project key"
+      sonar-organization:
+        required: true
+        type: string
+        description: "SonarCloud organization"
+      env-name:
+        required: true
+        type: string
+        description: "Environment name"
+      node-version:
+        required: false
+        type: string
+        description: "Node.js version"
+        default: "18"
+      build-path:
+        required: false
+        type: string
+        description: "Path to build project"
+        default: "."
+
+jobs:
+  sonarcloud-analysis:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.env-name }}
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node-version }}
+
+      - name: Set up bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install dependencies
+        working-directory: ${{ inputs.build-path }}
+        run: bun install --frozen-lockfile
+
+      - name: Run tests with coverage
+        working-directory: ${{ inputs.build-path }}
+        run: npm run test:coverage
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          projectBaseDir: ${{ inputs.build-path }}
+          args: >
+            -Dsonar.projectKey=${{ inputs.sonar-project-key }}
+            -Dsonar.organization=${{ inputs.sonar-organization }}
+            -Dsonar.sources=src
+            -Dsonar.tests=tests
+            -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
+            -Dsonar.test.inclusions=**/*.test.js,**/*.test.ts,**/*.spec.js,**/*.spec.ts
+            -Dsonar.exclusions=**/node_modules/**,**/coverage/**,**/dist/**,**/build/**,.wrangler/**,**/.git/**
+            -Dsonar.sourceEncoding=UTF-8
+            -Dsonar.javascript.file.suffixes=.js,.jsx
+            -Dsonar.typescript.file.suffixes=.ts,.tsx
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-and-test-results
+          path: |
+            ${{ inputs.build-path }}/coverage

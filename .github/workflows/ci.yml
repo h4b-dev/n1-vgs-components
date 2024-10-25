@@ -12,3 +12,13 @@ jobs:
     with:
       node-version: "18"
       scan-path: "."
+
+  sonarcloud-scan:
+    uses: ./.github/workflows/sonarcloud-nodejs-bun-scan-workflow.yml
+    with:
+      sonar-project-key: "h4b-dev_n1-vgs-components"
+      sonar-organization: "n1co"
+      env-name: "n1-ci"
+      node-version: "18"
+      build-path: "."
+    secrets: inherit
