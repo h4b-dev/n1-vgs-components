@@ -48,6 +48,18 @@ export const onErrorCallback = (onError) => (errors) => {
   onError(errors)
 }
 
+export const formatSubmitData = (fields, state) => ({
+  Name: fields['Name'],
+  Number: fields['Number'],
+  BinNumber: state.Number.bin,
+  LastFour: state.Number.last4,
+  ExpirationDate: fields['ExpirationDate'],
+  Cvv: fields['Cvv'],
+  Brand: state.Number.cardType,
+  Enabled: true,
+  Blocked: false,
+})
+
 const CollectForm = ({
   localeLbl = {
     cardName: 'Nombre en la tarjeta',
@@ -96,17 +108,7 @@ const CollectForm = ({
           headers: {
             Authorization: `Bearer ${token}`,
           },
-          data: (fields) => ({
-            Name: fields['Name'],
-            Number: fields['Number'],
-            BinNumber: state.Number.bin,
-            LastFour: state.Number.last4,
-            ExpirationDate: fields['ExpirationDate'],
-            Cvv: fields['Cvv'],
-            Brand: state.Number.cardType,
-            Enabled: true,
-            Blocked: false,
-          }),
+          data: (fields) => formatSubmitData(fields, state),
         }}
         onUpdateCallback={onUpdateCallback(onUpdate)}
         onSubmitCallback={onSubmitCallback(setIsFormLoading, onSubmit)}
@@ -199,4 +201,4 @@ const WrappedForm = (props) => {
 }
 
 export default WrappedForm
-export { CollectForm, onSubmitCallback, onUpdateCallback, onErrorCallback }
+export { CollectForm, onSubmitCallback, onUpdateCallback, onErrorCallback, formatSubmitData }

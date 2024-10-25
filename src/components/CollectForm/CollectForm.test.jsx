@@ -5,6 +5,7 @@ import { loadVGSCollect } from '@vgs/collect-js'
 import { useVGSCollectState } from '@vgs/collect-js-react'
 import CollectForm from './CollectForm'
 import { onSubmitCallback, onUpdateCallback, onErrorCallback } from './CollectForm'
+import { formatSubmitData } from './CollectForm'
 
 const mockProps = {
   token: 'test-token',
@@ -204,6 +205,59 @@ describe('Environment configuration', () => {
         cname: import.meta.env.VITE_VGS_SANDBOX_CNAME,
         version: String(import.meta.env.VITE_VGS_COLLECT_VERSION),
       }))
+    })
+  })
+})
+
+describe('formatSubmitData', () => {
+  it('formats submit data correctly', () => {
+    const fields = {
+      Name: 'John Doe',
+      Number: '4111111111111111',
+      ExpirationDate: '12/24',
+      Cvv: '123',
+    }
+    const state = {
+      Number: {
+        bin: '411111',
+        last4: '1111',
+        cardType: 'visa',
+      },
+    }
+
+    const result = formatSubmitData(fields, state)
+
+    expect(result).toEqual({
+      Name: 'John Doe',
+      Number: '4111111111111111',
+      BinNumber: '411111',
+      LastFour: '1111',
+      ExpirationDate: '12/24',
+      Cvv: '123',
+      Brand: 'visa',
+      Enabled: true,
+      Blocked: false,
+    })
+  })
+
+  it('handles missing fields gracefully', () => {
+    const fields = {}
+    const state = {
+      Number: {},
+    }
+
+    const result = formatSubmitData(fields, state)
+
+    expect(result).toEqual({
+      Name: undefined,
+      Number: undefined,
+      BinNumber: undefined,
+      LastFour: undefined,
+      ExpirationDate: undefined,
+      Cvv: undefined,
+      Brand: undefined,
+      Enabled: true,
+      Blocked: false,
     })
   })
 })
