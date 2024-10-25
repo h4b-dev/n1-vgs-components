@@ -6,6 +6,7 @@ import { useVGSCollectState } from '@vgs/collect-js-react'
 import CollectForm from './CollectForm'
 import { onSubmitCallback, onUpdateCallback, onErrorCallback } from './CollectForm'
 import { formatSubmitData } from './CollectForm'
+import { getConfig } from './CollectForm'
 
 const mockProps = {
   token: 'test-token',
@@ -258,6 +259,53 @@ describe('formatSubmitData', () => {
       Brand: undefined,
       Enabled: true,
       Blocked: false,
+    })
+  })
+})
+
+describe('getConfig', () => {
+  it('returns dev config when environment is dev', () => {
+    const config = getConfig('dev')
+    expect(config).toEqual({
+      vaultId: import.meta.env.VITE_VGS_DEV_VAULT_ID,
+      environment: import.meta.env.VITE_VGS_DEV_ENVIRONMENT,
+      cname: import.meta.env.VITE_VGS_DEV_CNAME,
+    })
+  })
+
+  it('returns sandbox config when environment is sandbox', () => {
+    const config = getConfig('sandbox')
+    expect(config).toEqual({
+      vaultId: import.meta.env.VITE_VGS_SANDBOX_VAULT_ID,
+      environment: import.meta.env.VITE_VGS_SANDBOX_ENVIRONMENT,
+      cname: import.meta.env.VITE_VGS_SANDBOX_CNAME,
+    })
+  })
+
+  it('returns prod config when environment is prod', () => {
+    const config = getConfig('prod')
+    expect(config).toEqual({
+      vaultId: import.meta.env.VITE_VGS_PROD_VAULT_ID,
+      environment: import.meta.env.VITE_VGS_PROD_ENVIRONMENT,
+      cname: import.meta.env.VITE_VGS_PROD_CNAME,
+    })
+  })
+
+  it('returns dev config when environment is not provided', () => {
+    const config = getConfig()
+    expect(config).toEqual({
+      vaultId: import.meta.env.VITE_VGS_DEV_VAULT_ID,
+      environment: import.meta.env.VITE_VGS_DEV_ENVIRONMENT,
+      cname: import.meta.env.VITE_VGS_DEV_CNAME,
+    })
+  })
+
+  it('returns dev config for unknown environment', () => {
+    const config = getConfig('unknown')
+    expect(config).toEqual({
+      vaultId: import.meta.env.VITE_VGS_DEV_VAULT_ID,
+      environment: import.meta.env.VITE_VGS_DEV_ENVIRONMENT,
+      cname: import.meta.env.VITE_VGS_DEV_CNAME,
     })
   })
 })

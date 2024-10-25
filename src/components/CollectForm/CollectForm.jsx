@@ -60,6 +60,10 @@ export const formatSubmitData = (fields, state) => ({
   Blocked: false,
 })
 
+export const getConfig = (environment) => {
+  return ENV_CONFIG[environment] || ENV_CONFIG['dev']
+}
+
 const CollectForm = ({
   localeLbl = {
     cardName: 'Nombre en la tarjeta',
@@ -177,9 +181,10 @@ const CollectForm = ({
 const WrappedForm = (props) => {
   const [isVGSCollectScriptLoaded, setCollectScriptLoaded] = useState(false)
 
+  const config = getConfig(props.environment)
   useEffect(() => {
     loadVGSCollect({
-      ...ENV_CONFIG[props.environment || 'dev'],
+      ...config,
       version: COLLECT_VERSION,
     })
       .then(() => {
