@@ -35,20 +35,20 @@ const ENV_CONFIG = {
   },
 }
 
-export const onSubmitCallback = (setIsFormLoading, onSubmit) => (status, response) => {
+const onSubmitCallback = (setIsFormLoading, onSubmit) => (status, response) => {
   setIsFormLoading(false)
   onSubmit(response?.data?.id ?? null, status, response)
 }
 
-export const onUpdateCallback = (onUpdate) => (state) => {
+const onUpdateCallback = (onUpdate) => (state) => {
   onUpdate(state)
 }
 
-export const onErrorCallback = (onError) => (errors) => {
+const onErrorCallback = (onError) => (errors) => {
   onError(errors)
 }
 
-export const formatSubmitData = (fields, state) => ({
+const formatSubmitData = (fields, state) => ({
   Name: fields['Name'],
   Number: fields['Number'],
   BinNumber: state.Number.bin,
@@ -207,3 +207,4 @@ const WrappedForm = (props) => {
 
 export default WrappedForm
 export { CollectForm, onSubmitCallback, onUpdateCallback, onErrorCallback, formatSubmitData }
+

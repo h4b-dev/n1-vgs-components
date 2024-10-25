@@ -1,7 +1,7 @@
 {
   "name": "@h4b-dev/n1-vgs-components",
   "description": "components for secure checkout",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "type": "module",
   "module": "dist/index.js",
   "main": "dist/index.js",
@@ -39,7 +39,7 @@
     "@vgs/collect-js": "0.6.3",
     "@vgs/collect-js-react": "1.1.0",
     "postcss-import": "16.1.0",
-    "vite": "^5.3.4"
+    "vite": "^5.4.10"
   },
   "devDependencies": {
     "@ladle/react": "^4.0.1",
