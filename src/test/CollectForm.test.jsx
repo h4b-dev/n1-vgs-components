@@ -3,10 +3,10 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { loadVGSCollect } from '@vgs/collect-js'
 import { useVGSCollectState } from '@vgs/collect-js-react'
-import CollectForm from './CollectForm'
-import { onSubmitCallback, onUpdateCallback, onErrorCallback } from './CollectForm'
-import { formatSubmitData } from './CollectForm'
-import { getConfig } from './CollectForm'
+import CollectForm from '../components/CollectForm/CollectForm'
+import { onSubmitCallback, onUpdateCallback, onErrorCallback } from '../components/CollectForm/CollectForm'
+import { formatSubmitData } from '../components/CollectForm/CollectForm'
+import { getConfig } from '../components/CollectForm/CollectForm'
 
 const mockProps = {
   token: 'test-token',
