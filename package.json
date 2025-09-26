@@ -69,5 +69,8 @@
   "peerDependencies": {
     "react": "19.1.1",
     "react-dom": "19.1.1"
+  },
+  "overrides": {
+    "underscore": "1.13.6"
   }
 }
