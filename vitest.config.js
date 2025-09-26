@@ -8,10 +8,11 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: './src/test/setup.js',
     include: ['src/**/*.{test,spec}.{js,jsx}'],
-    css: {
-      modules: {
-        classNameStrategy: 'non-scoped',
-      },
+    deps: {
+      inline: ['msw', 'msw/node'],
+    },
+    moduleNameMapper: {
+      '\\.css$': './src/test/styleMock.js',
     },
   },
   plugins: [react()],

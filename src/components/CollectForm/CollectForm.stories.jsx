@@ -1,4 +1,5 @@
-import CollectForm from './CollectForm'
+import { CollectForm } from '../../'
+import { msw } from '@ladle/react'
 
 const token = `<Enter auth0 token>`
 
@@ -105,4 +106,75 @@ export const Prod = () => (
     }}
   />
 )
+
+export const WithLimitsNotReached = () => (
+  <CollectForm
+    environment="dev"
+    token="test-token"
+    limitsApiUrl="/api/limits"
+    onSubmit={(id, httpStatus, httpResponse) => {
+      console.log('onSubmit:id', id)
+      console.log('onSubmit:httpStatus', httpStatus)
+      console.log('onSubmit:httpResponse', httpResponse)
+    }}
+    onUpdate={(state) => {
+      console.log('onUpdate:state', state)
+    }}
+    onError={(errors) => {
+      console.log('onError:errors', errors)
+    }}
+  />
+)
+
+WithLimitsNotReached.story = {
+  name: 'With Limits Not Reached',
+}
+
+WithLimitsNotReached.msw = [
+  msw.http.get('/api/limits', () => {
+    return msw.HttpResponse.json({
+      limits: {
+        allowed: {
+          canCreateNewCard: true,
+        },
+      },
+    })
+  }),
+]
+
+export const WithLimitsReached = () => (
+  <CollectForm
+    environment="dev"
+    token="test-token"
+    limitsApiUrl="/api/limits"
+    onSubmit={(id, httpStatus, httpResponse) => {
+      console.log('onSubmit:id', id)
+      console.log('onSubmit:httpStatus', httpStatus)
+      console.log('onSubmit:httpResponse', httpResponse)
+    }}
+    onUpdate={(state) => {
+      console.log('onUpdate:state', state)
+    }}
+    onError={(errors) => {
+      console.log('onError:errors', errors)
+    }}
+  />
+)
+
+WithLimitsReached.story = {
+  name: 'With Limits Reached',
+}
+
+WithLimitsReached.msw = [
+  msw.http.get('/api/limits', () => {
+    return msw.HttpResponse.json({
+      limits: {
+        allowed: {
+          canCreateNewCard: false,
+          reasonMessage: 'You have reached your daily limit of new cards.',
+        },
+      },
+    })
+  }),
+]
 
