@@ -14,7 +14,7 @@ export const Default = () => (
       console.log('onSubmit:httpStatus', httpStatus) // generally 200 or 400
       // note that status could be 200 on an error such as 'the same card already exists'
       console.log('onSubmit:httpResponse', httpResponse) // raw http response from tokenization
-   }}
+    }}
     onUpdate={(state) => {
       // this gets called for every state change
       // it gets called a bunch of times at the start
@@ -40,7 +40,7 @@ export const Dev = () => (
       console.log('onSubmit:httpStatus', httpStatus) // generally 200 or 400
       // note that status could be 200 on an error such as 'the same card already exists'
       console.log('onSubmit:httpResponse', httpResponse) // raw http response from tokenization
-   }}
+    }}
     onUpdate={(state) => {
       // this gets called for every state change
       // it gets called a bunch of times at the start
@@ -66,7 +66,7 @@ export const Sandbox = () => (
       console.log('onSubmit:httpStatus', httpStatus) // generally 200 or 400
       // note that status could be 200 on an error such as 'the same card already exists'
       console.log('onSubmit:httpResponse', httpResponse) // raw http response from tokenization
-   }}
+    }}
     onUpdate={(state) => {
       // this gets called for every state change
       // it gets called a bunch of times at the start
@@ -92,7 +92,7 @@ export const Prod = () => (
       console.log('onSubmit:httpStatus', httpStatus) // generally 200 or 400
       // note that status could be 200 on an error such as 'the same card already exists'
       console.log('onSubmit:httpResponse', httpResponse) // raw http response from tokenization
-   }}
+    }}
     onUpdate={(state) => {
       // this gets called for every state change
       // it gets called a bunch of times at the start
@@ -177,4 +177,3 @@ WithLimitsReached.msw = [
     })
   }),
 ]
-

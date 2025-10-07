@@ -25,3 +25,6 @@ coverage
 *.sw?
 .env
 
+__snapshots__
+.scannerwork
+

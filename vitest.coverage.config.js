@@ -1,6 +1,6 @@
 import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react-swc'
-import { fileURLToPath } from 'url'
+import { fileURLToPath } from 'node:url'
 
 export default defineConfig({
   test: {
@@ -24,20 +24,20 @@ export default defineConfig({
         'src/test/**',
         '**/index.js',
         '**/*.stories.{js,jsx}',
-        '**/*.stories.{ts,tsx}'
+        '**/*.stories.{ts,tsx}',
       ],
       include: ['src/**/*.{js,jsx}'],
       all: true,
       lines: 80,
       functions: 80,
       branches: 80,
-      statements: 80
-    }
+      statements: 80,
+    },
   },
   plugins: [react()],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
-    }
-  }
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+    },
+  },
 })

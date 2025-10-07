@@ -7,7 +7,7 @@ module.exports = {
     'plugin:react/jsx-runtime',
     'plugin:react-hooks/recommended',
     'prettier',
-    'plugin:import/react'
+    'plugin:import/react',
   ],
   parserOptions: {
     ecmaFeatures: {
@@ -29,18 +29,15 @@ module.exports = {
   },
   plugins: ['react-refresh', 'prettier'],
   rules: {
-    'react-refresh/only-export-components': [
-      'warn',
-      { allowConstantExport: true },
-    ],
+    'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
     'prettier/prettier': [
       1,
       {
         singleQuote: true,
         semi: false,
         tabWidth: 2,
-      	printWidth: 120,
-	jsxBracketSameLine: true,
+        printWidth: 120,
+        jsxBracketSameLine: true,
       },
     ],
     'linebreak-style': ['error', 'unix'],
@@ -59,7 +56,7 @@ module.exports = {
         exceptions: [''],
       },
     ],
-    'react/prop-types': ['off']
+    'react/prop-types': ['off'],
     // 'import/no-unresolved': [2, { ignore: ['~icons/*'] }],
     // 'import/extensions': [0, 'always', { ignorePackages: true }],
   },

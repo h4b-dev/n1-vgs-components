@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
+import PropTypes from 'prop-types'
 import { VGSCollectForm, VGSCollectProvider, useVGSCollectState } from '@vgs/collect-js-react'
 import { loadVGSCollect } from '@vgs/collect-js'
 import { styles } from './CollectForm.module.css'
@@ -180,8 +181,9 @@ const CollectForm = ({
 
 const WrappedForm = (props) => {
   const [isVGSCollectScriptLoaded, setCollectScriptLoaded] = useState(false)
+  const { environment = 'dev', onError = () => {} } = props
 
-  const config = getConfig(props.environment)
+  const config = getConfig(environment)
   useEffect(() => {
     loadVGSCollect({
       ...config,
@@ -192,9 +194,9 @@ const WrappedForm = (props) => {
       })
       .catch((e) => {
         console.error(e)
-        props.onError(e)
+        onError(e)
       })
-  }, [props])
+  }, [config, onError])
 
   return (
     isVGSCollectScriptLoaded && (
@@ -205,6 +207,25 @@ const WrappedForm = (props) => {
   )
 }
 
+WrappedForm.propTypes = {
+  environment: PropTypes.oneOf(['dev', 'sandbox', 'prod']),
+  onError: PropTypes.func,
+  localeLbl: PropTypes.shape({
+    cardName: PropTypes.string,
+    cardNumber: PropTypes.string,
+    cardExp: PropTypes.string,
+    cardCVV: PropTypes.string,
+    formAction: PropTypes.string,
+  }),
+  validCardBrands: PropTypes.arrayOf(
+    PropTypes.shape({
+      type: PropTypes.string,
+    }),
+  ),
+  token: PropTypes.string,
+  onSubmit: PropTypes.func,
+  onUpdate: PropTypes.func,
+}
+
 export default WrappedForm
 export { CollectForm, onSubmitCallback, onUpdateCallback, onErrorCallback, formatSubmitData }
-
