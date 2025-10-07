@@ -49,6 +49,6 @@ export default defineConfig({
     react(),
   ],
   define: {
-    'process.env': 'import.meta.env'
-  }
+    'process.env': 'import.meta.env',
+  },
 })

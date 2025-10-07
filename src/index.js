@@ -1,3 +1,3 @@
 import './global.css'
 
-export { default as CollectForm } from './components/CollectForm/CollectForm'
+export { default as CollectForm } from './components/CollectFormWrapper'

@@ -23,3 +23,8 @@ coverage
 *.njsproj
 *.sln
 *.sw?
+.env
+
+__snapshots__
+.scannerwork
+

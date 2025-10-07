@@ -1,6 +1,6 @@
 import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react-swc'
-import { fileURLToPath } from 'url'
+import { fileURLToPath } from 'node:url'
 
 export default defineConfig({
   test: {
@@ -8,10 +8,11 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: './src/test/setup.js',
     include: ['src/**/*.{test,spec}.{js,jsx}'],
-    css: {
-      modules: {
-        classNameStrategy: 'non-scoped',
-      },
+    deps: {
+      inline: ['msw', 'msw/node'],
+    },
+    moduleNameMapper: {
+      '\\.css$': './src/test/styleMock.js',
     },
   },
   plugins: [react()],
@@ -21,4 +22,3 @@ export default defineConfig({
     },
   },
 })
-

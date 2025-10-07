@@ -1,1 +1,1 @@
-export { default as CollectForm } from './CollectForm'
+export { default as CollectForm } from './CollectFormWrapper'
