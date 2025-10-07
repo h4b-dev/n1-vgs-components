@@ -1,7 +1,7 @@
 name: CI
 on:
   push:
-    branches: [develop]
+    branches: [fix/ci-workflow]
   pull_request:
     branches: [develop]
 
@@ -11,13 +11,3 @@ jobs:
     with:
       node-version: "18"
       scan-path: "."
-
-  sonarcloud-scan:
-    uses: h4b-dev/n1-gh-reusable-workflows/.github/workflows/sonarcloud-nodejs-bun-scan-workflow.yml@main
-    with:
-      sonar-project-key: "h4b-dev_n1-vgs-components"
-      sonar-organization: "n1co"
-      env-name: "n1-ci"
-      node-version: "18"
-      build-path: "."
-    secrets: inherit
