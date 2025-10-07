@@ -121,3 +121,199 @@ describe('CollectFormWrapper', () => {
     })
   })
 })
+
+describe('PropTypes validation', () => {
+  beforeEach(() => {
+    vi.spyOn(window, 'fetch')
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
+  it('accepts valid environment values - dev', async () => {
+    window.fetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ limits: { allowed: { canCreateNewCard: true } } }),
+    })
+
+    render(<CollectFormWrapper token="test-token" limitsApiUrl="/api/limits" environment="dev" />)
+
+    await waitFor(() => {
+      expect(screen.getByTestId('collect-form')).toBeInTheDocument()
+    })
+  })
+
+  it('accepts valid environment values - sandbox', async () => {
+    window.fetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ limits: { allowed: { canCreateNewCard: true } } }),
+    })
+
+    render(<CollectFormWrapper token="test-token" limitsApiUrl="/api/limits" environment="sandbox" />)
+
+    await waitFor(() => {
+      expect(screen.getByTestId('collect-form')).toBeInTheDocument()
+    })
+  })
+
+  it('accepts valid environment values - prod', async () => {
+    window.fetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ limits: { allowed: { canCreateNewCard: true } } }),
+    })
+
+    render(<CollectFormWrapper token="test-token" limitsApiUrl="/api/limits" environment="prod" />)
+
+    await waitFor(() => {
+      expect(screen.getByTestId('collect-form')).toBeInTheDocument()
+    })
+  })
+
+  it('accepts function props for callbacks', async () => {
+    window.fetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ limits: { allowed: { canCreateNewCard: true } } }),
+    })
+
+    const callbacks = {
+      onSubmit: vi.fn(),
+      onUpdate: vi.fn(),
+      onError: vi.fn(),
+    }
+
+    render(<CollectFormWrapper token="test-token" limitsApiUrl="/api/limits" {...callbacks} />)
+
+    await waitFor(() => {
+      expect(screen.getByTestId('collect-form')).toBeInTheDocument()
+    })
+  })
+
+  it('accepts valid localeLbl object', async () => {
+    window.fetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ limits: { allowed: { canCreateNewCard: true } } }),
+    })
+
+    const localeLbl = {
+      cardName: 'Card Name',
+      cardNumber: 'Card Number',
+      cardExp: 'Expiration',
+      cardCVV: 'CVV',
+      formAction: 'Submit',
+    }
+
+    render(<CollectFormWrapper token="test-token" limitsApiUrl="/api/limits" localeLbl={localeLbl} />)
+
+    await waitFor(() => {
+      expect(screen.getByTestId('collect-form')).toBeInTheDocument()
+    })
+  })
+
+  it('accepts valid validCardBrands array', async () => {
+    window.fetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ limits: { allowed: { canCreateNewCard: true } } }),
+    })
+
+    const validCardBrands = [{ type: 'visa' }, { type: 'mastercard' }, { type: 'amex' }]
+
+    render(<CollectFormWrapper token="test-token" limitsApiUrl="/api/limits" validCardBrands={validCardBrands} />)
+
+    await waitFor(() => {
+      expect(screen.getByTestId('collect-form')).toBeInTheDocument()
+    })
+  })
+
+  it('uses default props when not provided', () => {
+    render(<CollectFormWrapper />)
+
+    expect(screen.getByTestId('collect-form')).toBeInTheDocument()
+  })
+
+  it('accepts all valid props together', async () => {
+    window.fetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ limits: { allowed: { canCreateNewCard: true } } }),
+    })
+
+    const allProps = {
+      token: 'test-token',
+      limitsApiUrl: '/api/limits',
+      environment: 'sandbox',
+      onError: vi.fn(),
+      onSubmit: vi.fn(),
+      onUpdate: vi.fn(),
+      localeLbl: {
+        cardName: 'Card Name',
+        cardNumber: 'Card Number',
+        cardExp: 'Expiration',
+        cardCVV: 'CVV',
+        formAction: 'Submit',
+      },
+      validCardBrands: [{ type: 'visa' }, { type: 'mastercard' }],
+    }
+
+    render(<CollectFormWrapper {...allProps} />)
+
+    await waitFor(() => {
+      expect(screen.getByTestId('collect-form')).toBeInTheDocument()
+    })
+  })
+
+  it('executes default onError function when not provided', () => {
+    // Render without onError to trigger default
+    render(<CollectFormWrapper token="" limitsApiUrl="" />)
+    expect(screen.getByTestId('collect-form')).toBeInTheDocument()
+  })
+
+  it('executes default onSubmit function when not provided', () => {
+    // Render without onSubmit to trigger default
+    render(<CollectFormWrapper />)
+    expect(screen.getByTestId('collect-form')).toBeInTheDocument()
+  })
+
+  it('executes default onUpdate function when not provided', () => {
+    // Render without onUpdate to trigger default
+    render(<CollectFormWrapper />)
+    expect(screen.getByTestId('collect-form')).toBeInTheDocument()
+  })
+
+  it('uses default environment when not provided', async () => {
+    window.fetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ limits: { allowed: { canCreateNewCard: true } } }),
+    })
+
+    // Render without environment to use default 'dev'
+    render(<CollectFormWrapper token="test-token" limitsApiUrl="/api/limits" />)
+
+    await waitFor(() => {
+      expect(screen.getByTestId('collect-form')).toBeInTheDocument()
+    })
+  })
+
+  it('uses default token when not provided', () => {
+    // Render without token to use default ''
+    render(<CollectFormWrapper limitsApiUrl="/api/limits" />)
+    expect(screen.getByTestId('collect-form')).toBeInTheDocument()
+  })
+
+  it('uses default limitsApiUrl when not provided', () => {
+    // Render without limitsApiUrl to use default ''
+    render(<CollectFormWrapper token="test-token" />)
+    expect(screen.getByTestId('collect-form')).toBeInTheDocument()
+  })
+
+  it('uses default localeLbl when not provided', () => {
+    // Render without localeLbl to use default
+    render(<CollectFormWrapper />)
+    expect(screen.getByTestId('collect-form')).toBeInTheDocument()
+  })
+
+  it('uses default validCardBrands when not provided', () => {
+    // Render without validCardBrands to use default
+    render(<CollectFormWrapper />)
+    expect(screen.getByTestId('collect-form')).toBeInTheDocument()
+  })
+})

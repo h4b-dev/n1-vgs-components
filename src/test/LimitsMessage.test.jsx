@@ -68,11 +68,36 @@ describe('LimitsMessage', () => {
     })
 
     it('should handle empty string messages', () => {
-      render(<LimitsMessage message="" />)
       const { container } = render(<LimitsMessage message="" />)
       const containerElement = container.querySelector(`.${styles.container}`)
+      const messageElement = container.querySelector(`.${styles.message}`)
 
       expect(containerElement).toBeInTheDocument()
+      expect(messageElement).toHaveTextContent('')
+    })
+
+    it('should handle undefined message prop with default empty string', () => {
+      const { container } = render(<LimitsMessage message={undefined} />)
+      const messageElement = container.querySelector(`.${styles.message}`)
+
+      expect(messageElement).toBeInTheDocument()
+      expect(messageElement).toHaveTextContent('')
+    })
+
+    it('should handle null message prop with default empty string', () => {
+      const { container } = render(<LimitsMessage message={null} />)
+      const messageElement = container.querySelector(`.${styles.message}`)
+
+      expect(messageElement).toBeInTheDocument()
+      expect(messageElement).toHaveTextContent('')
+    })
+
+    it('should handle missing message prop with default empty string', () => {
+      const { container } = render(<LimitsMessage />)
+      const messageElement = container.querySelector(`.${styles.message}`)
+
+      expect(messageElement).toBeInTheDocument()
+      expect(messageElement).toHaveTextContent('')
     })
   })
 

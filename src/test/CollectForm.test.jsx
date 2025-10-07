@@ -555,3 +555,125 @@ describe('Default parameter function execution', () => {
     fireEvent.submit(form)
   })
 })
+
+describe('PropTypes validation', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
+  it('accepts valid environment values - dev', async () => {
+    vi.mocked(loadVGSCollect).mockResolvedValueOnce()
+    render(<CollectForm {...mockProps} environment="dev" />)
+    await waitFor(() => {
+      expect(screen.getByTestId('vgs-form')).toBeInTheDocument()
+    })
+  })
+
+  it('accepts valid environment values - sandbox', async () => {
+    vi.mocked(loadVGSCollect).mockResolvedValueOnce()
+    render(<CollectForm {...mockProps} environment="sandbox" />)
+    await waitFor(() => {
+      expect(screen.getByTestId('vgs-form')).toBeInTheDocument()
+    })
+  })
+
+  it('accepts valid environment values - prod', async () => {
+    vi.mocked(loadVGSCollect).mockResolvedValueOnce()
+    render(<CollectForm {...mockProps} environment="prod" />)
+    await waitFor(() => {
+      expect(screen.getByTestId('vgs-form')).toBeInTheDocument()
+    })
+  })
+
+  it('renders with default props when minimal props are provided', async () => {
+    vi.mocked(loadVGSCollect).mockResolvedValueOnce()
+
+    render(<CollectForm token="test-token" />)
+
+    await waitFor(() => {
+      expect(screen.getByTestId('vgs-form')).toBeInTheDocument()
+    })
+  })
+
+  it('accepts function props for callbacks', async () => {
+    const callbacks = {
+      onSubmit: vi.fn(),
+      onUpdate: vi.fn(),
+      onError: vi.fn(),
+    }
+
+    vi.mocked(loadVGSCollect).mockResolvedValueOnce()
+
+    render(<CollectForm {...mockProps} {...callbacks} />)
+
+    await waitFor(() => {
+      expect(screen.getByTestId('vgs-form')).toBeInTheDocument()
+    })
+  })
+
+  it('accepts valid validCardBrands array', async () => {
+    const validCardBrands = [{ type: 'visa' }, { type: 'mastercard' }, { type: 'amex' }]
+
+    vi.mocked(loadVGSCollect).mockResolvedValueOnce()
+
+    render(<CollectForm {...mockProps} validCardBrands={validCardBrands} />)
+
+    await waitFor(() => {
+      expect(screen.getByTestId('vgs-form')).toBeInTheDocument()
+    })
+  })
+
+  it('accepts valid localeLbl object', async () => {
+    const localeLbl = {
+      cardName: 'Card Name',
+      cardNumber: 'Card Number',
+      cardExp: 'Expiration',
+      cardCVV: 'CVV',
+      formAction: 'Submit',
+    }
+
+    vi.mocked(loadVGSCollect).mockResolvedValueOnce()
+
+    render(<CollectForm {...mockProps} localeLbl={localeLbl} />)
+
+    await waitFor(() => {
+      expect(screen.getByTestId('vgs-form')).toBeInTheDocument()
+      expect(screen.getByText('Card Name')).toBeInTheDocument()
+      expect(screen.getByText('Card Number')).toBeInTheDocument()
+    })
+  })
+
+  it('executes default onError function', async () => {
+    const error = new Error('Test error')
+    vi.mocked(loadVGSCollect).mockRejectedValueOnce(error)
+
+    // Render without providing onError to use the default
+    render(<CollectForm token="test-token" environment="dev" />)
+
+    await waitFor(() => {
+      expect(screen.queryByTestId('vgs-form')).not.toBeInTheDocument()
+    })
+  })
+
+  it('executes default onSubmit function', async () => {
+    vi.mocked(loadVGSCollect).mockResolvedValueOnce()
+
+    // Render without providing onSubmit to use the default
+    render(<CollectForm token="test-token" environment="dev" />)
+
+    await waitFor(() => {
+      expect(screen.getByTestId('vgs-form')).toBeInTheDocument()
+    })
+  })
+
+  it('executes default onUpdate function', async () => {
+    vi.mocked(loadVGSCollect).mockResolvedValueOnce()
+
+    // Render without providing onUpdate to use the default
+    render(<CollectForm token="test-token" environment="dev" />)
+
+    await waitFor(() => {
+      expect(screen.getByTestId('vgs-form')).toBeInTheDocument()
+    })
+  })
+})

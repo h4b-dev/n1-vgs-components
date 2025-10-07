@@ -1,6 +1,9 @@
+import PropTypes from 'prop-types'
 import styles from './LimitsMessage.module.css'
 
-const LimitsMessage = ({ message }) => {
+const LimitsMessage = (props) => {
+  let message = props.message ?? ''
+
   return (
     <div className={styles.container}>
       <div className={styles.iconWrapper}>
@@ -22,6 +25,10 @@ const LimitsMessage = ({ message }) => {
       </div>
     </div>
   )
+}
+
+LimitsMessage.propTypes = {
+  message: PropTypes.string,
 }
 
 export default LimitsMessage
