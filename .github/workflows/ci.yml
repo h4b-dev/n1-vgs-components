@@ -14,7 +14,7 @@ jobs:
       scan-path: "."
 
   sonarcloud-scan:
-    uses: h4b-dev/n1-gh-reusable-workflows/.github/workflows/sonarcloud-nodejs-npm-scan-workflow.yml@main
+    uses: h4b-dev/n1-gh-reusable-workflows/.github/workflows/.github/workflows/sonarcloud-nodejs-bun-scan-workflow.yml@main
     with:
       sonar-project-key: "h4b-dev_n1-vgs-components"
       sonar-organization: "n1co"
