@@ -1,27 +1,24 @@
 // src/test/mockComponents.jsx
 import React from 'react'
-
-export const mockVGSCollectState = {
-  Name: { isValid: false },
-  Number: { isValid: false, bin: '', last4: '', cardType: '' },
-  ExpirationDate: { isValid: false },
-  Cvv: { isValid: false }
-}
+import { mockVGSCollectState } from './mockData'
 
 // Create proper mock components
-const createMockField = (testId) => 
-  React.forwardRef((props, ref) => (
+const createMockField = (testId, displayName) => {
+  const MockField = React.forwardRef((props, ref) => (
     <div data-testid={testId}>
       <input type="text" {...props} ref={ref} />
     </div>
   ))
+  MockField.displayName = displayName
+  return MockField
+}
 
-export const MockTextField = createMockField('text-field')
-export const MockCardNumberField = createMockField('card-number-field')
+export const MockTextField = createMockField('text-field', 'MockTextField')
+export const MockCardNumberField = createMockField('card-number-field', 'MockCardNumberField')
 export const MockCardExpirationDateField = createMockField('card-expiration-field')
 export const MockCardSecurityCodeField = createMockField('card-security-code-field')
 
-export const MockVGSCollectForm = React.forwardRef(({ children, onSubmitCallback, onUpdateCallback }, ref) => {
+export const MockVGSCollectForm = React.forwardRef(({ children, onUpdateCallback }, ref) => {
   React.useEffect(() => {
     if (onUpdateCallback) {
       onUpdateCallback(mockVGSCollectState)

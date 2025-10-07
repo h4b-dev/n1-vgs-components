@@ -1,5 +1,4 @@
-
-import React from 'react'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 import CollectFormWrapper from '../../src/components/CollectFormWrapper'
 
@@ -67,5 +66,58 @@ describe('CollectFormWrapper', () => {
   it('should render the CollectForm if token and limitsApiUrl are not provided', () => {
     render(<CollectFormWrapper />)
     expect(screen.getByTestId('collect-form')).toBeInTheDocument()
+  })
+
+  it('should render the CollectForm if only token is provided without limitsApiUrl', () => {
+    render(<CollectFormWrapper token="test-token" />)
+    expect(screen.getByTestId('collect-form')).toBeInTheDocument()
+  })
+
+  it('should render the CollectForm if only limitsApiUrl is provided without token', () => {
+    render(<CollectFormWrapper limitsApiUrl="/api/limits" />)
+    expect(screen.getByTestId('collect-form')).toBeInTheDocument()
+  })
+
+  it('should render the LimitsMessage when there is an error fetching limits', async () => {
+    window.fetch.mockRejectedValueOnce(new Error('Network error'))
+
+    render(<CollectFormWrapper token="test-token" limitsApiUrl="/api/limits" />)
+
+    await waitFor(() => {
+      expect(screen.getByText('An unexpected error occurred while validating limits.')).toBeInTheDocument()
+    })
+  })
+
+  it('should render the LimitsMessage when the API response is not ok', async () => {
+    window.fetch.mockResolvedValueOnce({
+      ok: false,
+      status: 500,
+    })
+
+    render(<CollectFormWrapper token="test-token" limitsApiUrl="/api/limits" />)
+
+    await waitFor(() => {
+      expect(screen.getByText('An unexpected error occurred while validating limits.')).toBeInTheDocument()
+    })
+  })
+
+  it('should pass all props to CollectForm when rendering it', async () => {
+    window.fetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ limits: { allowed: { canCreateNewCard: true } } }),
+    })
+
+    const mockProps = {
+      token: 'test-token',
+      limitsApiUrl: '/api/limits',
+      environment: 'sandbox',
+      vaultId: 'test-vault',
+    }
+
+    render(<CollectFormWrapper {...mockProps} />)
+
+    await waitFor(() => {
+      expect(screen.getByTestId('collect-form')).toBeInTheDocument()
+    })
   })
 })

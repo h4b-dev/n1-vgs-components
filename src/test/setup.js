@@ -9,8 +9,8 @@ import {
   MockCardExpirationDateField,
   MockCardSecurityCodeField,
   MockVGSCollectForm,
-  mockVGSCollectState,
 } from './mockComponents'
+import { mockVGSCollectState } from './mockData'
 
 expect.extend(matchers)
 
@@ -74,4 +74,3 @@ vi.mock('@vgs/collect-js-react', () => {
 
   return module
 })
-

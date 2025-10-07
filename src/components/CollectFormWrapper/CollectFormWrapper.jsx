@@ -1,12 +1,13 @@
-
-import React from 'react'
 import useLimitsValidation from '../../hooks/useLimitsValidation'
 import CollectForm from '../CollectForm'
 import LimitsMessage from '../LimitsMessage'
 
 const CollectFormWrapper = (props) => {
   const { token, limitsApiUrl } = props
-  const { canCreate, loading, error, reason } = useLimitsValidation({ token, limitsApiUrl })
+  const { canCreate, loading, error, reason } = useLimitsValidation({
+    token,
+    limitsApiUrl,
+  })
 
   if (!token || !limitsApiUrl) {
     return <CollectForm {...props} />

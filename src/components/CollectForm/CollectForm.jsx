@@ -180,8 +180,9 @@ const CollectForm = ({
 
 const WrappedForm = (props) => {
   const [isVGSCollectScriptLoaded, setCollectScriptLoaded] = useState(false)
+  const { environment, onError } = props
 
-  const config = getConfig(props.environment)
+  const config = getConfig(environment)
   useEffect(() => {
     loadVGSCollect({
       ...config,
@@ -192,9 +193,9 @@ const WrappedForm = (props) => {
       })
       .catch((e) => {
         console.error(e)
-        props.onError(e)
+        onError(e)
       })
-  }, [props])
+  }, [config, onError])
 
   return (
     isVGSCollectScriptLoaded && (
@@ -207,4 +208,3 @@ const WrappedForm = (props) => {
 
 export default WrappedForm
 export { CollectForm, onSubmitCallback, onUpdateCallback, onErrorCallback, formatSubmitData }
-
