@@ -1,19 +1,40 @@
 import { useState, useEffect } from 'react'
 
-const useLimitsValidation = ({ token, limitsApiUrl }) => {
+const CHECK_ACTION = String(import.meta.env.VITE_VGS_CHECK_ACTION)
+
+const ENV_CONFIG = {
+  dev: {
+    cname: import.meta.env.VITE_VGS_DEV_CNAME,
+  },
+  sandbox: {
+    cname: import.meta.env.VITE_VGS_SANDBOX_CNAME,
+  },
+  prod: {
+    cname: import.meta.env.VITE_VGS_PROD_CNAME,
+  },
+}
+
+export const getConfig = (environment) => {
+  return ENV_CONFIG[environment] || ENV_CONFIG['dev']
+}
+
+const useLimitsValidation = ({ token, environment = 'dev' }) => {
   const [canCreate, setCanCreate] = useState(false)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [reason, setReason] = useState(null)
 
   useEffect(() => {
-    if (!token || !limitsApiUrl) {
+    if (!token) {
       setLoading(false)
       return
     }
 
     const fetchLimits = async () => {
       try {
+        const config = getConfig(environment)
+        const limitsApiUrl = `https://${config.cname}${CHECK_ACTION}`
+
         const response = await fetch(limitsApiUrl, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -42,7 +63,7 @@ const useLimitsValidation = ({ token, limitsApiUrl }) => {
     }
 
     fetchLimits()
-  }, [token, limitsApiUrl])
+  }, [token, environment])
 
   return { canCreate, loading, error, reason }
 }

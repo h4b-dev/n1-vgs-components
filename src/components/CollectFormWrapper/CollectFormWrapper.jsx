@@ -4,13 +4,13 @@ import CollectForm from '../CollectForm'
 import LimitsMessage from '../LimitsMessage'
 
 const CollectFormWrapper = (props) => {
-  const { token, limitsApiUrl } = props
+  const { token, environment } = props
   const { canCreate, loading, error, reason } = useLimitsValidation({
     token,
-    limitsApiUrl,
+    environment,
   })
 
-  if (!token || !limitsApiUrl) {
+  if (!token) {
     return <CollectForm {...props} />
   }
 
@@ -27,7 +27,6 @@ const CollectFormWrapper = (props) => {
 
 CollectFormWrapper.propTypes = {
   token: PropTypes.string,
-  limitsApiUrl: PropTypes.string,
   environment: PropTypes.oneOf(['dev', 'sandbox', 'prod']),
   onError: PropTypes.func,
   onSubmit: PropTypes.func,

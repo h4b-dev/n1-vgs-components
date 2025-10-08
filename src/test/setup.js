@@ -18,9 +18,16 @@ expect.extend(matchers)
 export const ENV_VARS = {
   VITE_VGS_COLLECT_VERSION: '2.0.0',
   VITE_VGS_CREATE_ACTION: '/test/action',
+  VITE_VGS_CHECK_ACTION: '/api/profiles',
   VITE_VGS_DEV_VAULT_ID: 'test-vault',
   VITE_VGS_DEV_ENVIRONMENT: 'sandbox',
   VITE_VGS_DEV_CNAME: 'test.sandbox.domain',
+  VITE_VGS_SANDBOX_VAULT_ID: 'test-sandbox-vault',
+  VITE_VGS_SANDBOX_ENVIRONMENT: 'sandbox',
+  VITE_VGS_SANDBOX_CNAME: 'test.sandbox.domain',
+  VITE_VGS_PROD_VAULT_ID: 'test-prod-vault',
+  VITE_VGS_PROD_ENVIRONMENT: 'live',
+  VITE_VGS_PROD_CNAME: 'test.prod.domain',
 }
 
 beforeAll(() => {
