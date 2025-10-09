@@ -17,7 +17,7 @@ describe('useLimitsValidation', () => {
       json: async () => ({ limits: { allowed: { canCreateNewCard: true } } }),
     })
 
-    const { result } = renderHook(() => useLimitsValidation({ token: 'test-token', limitsApiUrl: '/api/limits' }))
+    const { result } = renderHook(() => useLimitsValidation({ token: 'test-token', environment: 'dev' }))
 
     await waitFor(() => expect(result.current.loading).toBe(false))
 
@@ -37,7 +37,7 @@ describe('useLimitsValidation', () => {
       }),
     })
 
-    const { result } = renderHook(() => useLimitsValidation({ token: 'test-token', limitsApiUrl: '/api/limits' }))
+    const { result } = renderHook(() => useLimitsValidation({ token: 'test-token', environment: 'dev' }))
 
     await waitFor(() => expect(result.current.loading).toBe(false))
 
@@ -50,7 +50,7 @@ describe('useLimitsValidation', () => {
       ok: false,
     })
 
-    const { result } = renderHook(() => useLimitsValidation({ token: 'test-token', limitsApiUrl: '/api/limits' }))
+    const { result } = renderHook(() => useLimitsValidation({ token: 'test-token', environment: 'dev' }))
 
     await waitFor(() => expect(result.current.loading).toBe(false))
 
@@ -71,7 +71,7 @@ describe('useLimitsValidation', () => {
       }),
     })
 
-    const { result } = renderHook(() => useLimitsValidation({ token: 'test-token', limitsApiUrl: '/api/limits' }))
+    const { result } = renderHook(() => useLimitsValidation({ token: 'test-token', environment: 'dev' }))
 
     await waitFor(() => expect(result.current.loading).toBe(false))
 
@@ -87,7 +87,7 @@ describe('useLimitsValidation', () => {
       }),
     })
 
-    const { result } = renderHook(() => useLimitsValidation({ token: 'test-token', limitsApiUrl: '/api/limits' }))
+    const { result } = renderHook(() => useLimitsValidation({ token: 'test-token', environment: 'dev' }))
 
     await waitFor(() => expect(result.current.loading).toBe(false))
 
@@ -105,7 +105,7 @@ describe('useLimitsValidation', () => {
       }),
     })
 
-    const { result } = renderHook(() => useLimitsValidation({ token: 'test-token', limitsApiUrl: '/api/limits' }))
+    const { result } = renderHook(() => useLimitsValidation({ token: 'test-token', environment: 'dev' }))
 
     await waitFor(() => expect(result.current.loading).toBe(false))
 
@@ -116,7 +116,7 @@ describe('useLimitsValidation', () => {
   it('should handle network error during fetch', async () => {
     window.fetch.mockRejectedValueOnce(new Error('Network error'))
 
-    const { result } = renderHook(() => useLimitsValidation({ token: 'test-token', limitsApiUrl: '/api/limits' }))
+    const { result } = renderHook(() => useLimitsValidation({ token: 'test-token', environment: 'dev' }))
 
     await waitFor(() => expect(result.current.loading).toBe(false))
 
@@ -126,15 +126,7 @@ describe('useLimitsValidation', () => {
   })
 
   it('should not make api call when token is not provided', async () => {
-    const { result } = renderHook(() => useLimitsValidation({ token: null, limitsApiUrl: '/api/limits' }))
-
-    expect(result.current.loading).toBe(false)
-    expect(result.current.canCreate).toBe(false)
-    expect(window.fetch).not.toHaveBeenCalled()
-  })
-
-  it('should not make api call when limitsApiUrl is not provided', async () => {
-    const { result } = renderHook(() => useLimitsValidation({ token: 'test-token', limitsApiUrl: null }))
+    const { result } = renderHook(() => useLimitsValidation({ token: null, environment: 'dev' }))
 
     expect(result.current.loading).toBe(false)
     expect(result.current.canCreate).toBe(false)

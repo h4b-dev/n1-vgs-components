@@ -111,7 +111,6 @@ export const WithLimitsNotReached = () => (
   <CollectForm
     environment="dev"
     token="test-token"
-    limitsApiUrl="/api/limits"
     onSubmit={(id, httpStatus, httpResponse) => {
       console.log('onSubmit:id', id)
       console.log('onSubmit:httpStatus', httpStatus)
@@ -131,7 +130,7 @@ WithLimitsNotReached.story = {
 }
 
 WithLimitsNotReached.msw = [
-  msw.http.get('/api/limits', () => {
+  msw.http.get('https://test.sandbox.domain/api/profiles', () => {
     return msw.HttpResponse.json({
       limits: {
         allowed: {
@@ -146,7 +145,6 @@ export const WithLimitsReached = () => (
   <CollectForm
     environment="dev"
     token="test-token"
-    limitsApiUrl="/api/limits"
     onSubmit={(id, httpStatus, httpResponse) => {
       console.log('onSubmit:id', id)
       console.log('onSubmit:httpStatus', httpStatus)
@@ -166,7 +164,7 @@ WithLimitsReached.story = {
 }
 
 WithLimitsReached.msw = [
-  msw.http.get('/api/limits', () => {
+  msw.http.get('https://test.sandbox.domain/api/profiles', () => {
     return msw.HttpResponse.json({
       limits: {
         allowed: {

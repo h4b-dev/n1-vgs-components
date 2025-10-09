@@ -22,7 +22,7 @@ describe('CollectFormWrapper', () => {
       json: async () => ({ limits: { allowed: { canCreateNewCard: true } } }),
     })
 
-    render(<CollectFormWrapper token="test-token" limitsApiUrl="/api/limits" />)
+    render(<CollectFormWrapper token="test-token" environment="dev" />)
 
     await waitFor(() => {
       expect(screen.getByTestId('collect-form')).toBeInTheDocument()
@@ -42,7 +42,7 @@ describe('CollectFormWrapper', () => {
       }),
     })
 
-    render(<CollectFormWrapper token="test-token" limitsApiUrl="/api/limits" />)
+    render(<CollectFormWrapper token="test-token" environment="dev" />)
 
     await waitFor(() => {
       expect(screen.getByText('Daily limit reached')).toBeInTheDocument()
@@ -54,7 +54,7 @@ describe('CollectFormWrapper', () => {
       ok: true,
       json: async () => ({ limits: { allowed: { canCreateNewCard: true } } }),
     })
-    render(<CollectFormWrapper token="test-token" limitsApiUrl="/api/limits" />)
+    render(<CollectFormWrapper token="test-token" environment="dev" />)
 
     expect(screen.getByText('Loading...')).toBeInTheDocument()
 
@@ -63,25 +63,15 @@ describe('CollectFormWrapper', () => {
     })
   })
 
-  it('should render the CollectForm if token and limitsApiUrl are not provided', () => {
+  it('should render the CollectForm if token is not provided', () => {
     render(<CollectFormWrapper />)
-    expect(screen.getByTestId('collect-form')).toBeInTheDocument()
-  })
-
-  it('should render the CollectForm if only token is provided without limitsApiUrl', () => {
-    render(<CollectFormWrapper token="test-token" />)
-    expect(screen.getByTestId('collect-form')).toBeInTheDocument()
-  })
-
-  it('should render the CollectForm if only limitsApiUrl is provided without token', () => {
-    render(<CollectFormWrapper limitsApiUrl="/api/limits" />)
     expect(screen.getByTestId('collect-form')).toBeInTheDocument()
   })
 
   it('should render the LimitsMessage when there is an error fetching limits', async () => {
     window.fetch.mockRejectedValueOnce(new Error('Network error'))
 
-    render(<CollectFormWrapper token="test-token" limitsApiUrl="/api/limits" />)
+    render(<CollectFormWrapper token="test-token" environment="dev" />)
 
     await waitFor(() => {
       expect(screen.getByText('An unexpected error occurred while validating limits.')).toBeInTheDocument()
@@ -94,7 +84,7 @@ describe('CollectFormWrapper', () => {
       status: 500,
     })
 
-    render(<CollectFormWrapper token="test-token" limitsApiUrl="/api/limits" />)
+    render(<CollectFormWrapper token="test-token" environment="dev" />)
 
     await waitFor(() => {
       expect(screen.getByText('An unexpected error occurred while validating limits.')).toBeInTheDocument()
@@ -109,7 +99,6 @@ describe('CollectFormWrapper', () => {
 
     const mockProps = {
       token: 'test-token',
-      limitsApiUrl: '/api/limits',
       environment: 'sandbox',
       vaultId: 'test-vault',
     }
@@ -137,7 +126,7 @@ describe('PropTypes validation', () => {
       json: async () => ({ limits: { allowed: { canCreateNewCard: true } } }),
     })
 
-    render(<CollectFormWrapper token="test-token" limitsApiUrl="/api/limits" environment="dev" />)
+    render(<CollectFormWrapper token="test-token" environment="dev" />)
 
     await waitFor(() => {
       expect(screen.getByTestId('collect-form')).toBeInTheDocument()
@@ -150,7 +139,7 @@ describe('PropTypes validation', () => {
       json: async () => ({ limits: { allowed: { canCreateNewCard: true } } }),
     })
 
-    render(<CollectFormWrapper token="test-token" limitsApiUrl="/api/limits" environment="sandbox" />)
+    render(<CollectFormWrapper token="test-token" environment="sandbox" />)
 
     await waitFor(() => {
       expect(screen.getByTestId('collect-form')).toBeInTheDocument()
@@ -163,7 +152,7 @@ describe('PropTypes validation', () => {
       json: async () => ({ limits: { allowed: { canCreateNewCard: true } } }),
     })
 
-    render(<CollectFormWrapper token="test-token" limitsApiUrl="/api/limits" environment="prod" />)
+    render(<CollectFormWrapper token="test-token" environment="prod" />)
 
     await waitFor(() => {
       expect(screen.getByTestId('collect-form')).toBeInTheDocument()
@@ -182,7 +171,7 @@ describe('PropTypes validation', () => {
       onError: vi.fn(),
     }
 
-    render(<CollectFormWrapper token="test-token" limitsApiUrl="/api/limits" {...callbacks} />)
+    render(<CollectFormWrapper token="test-token" environment="dev" {...callbacks} />)
 
     await waitFor(() => {
       expect(screen.getByTestId('collect-form')).toBeInTheDocument()
@@ -203,7 +192,7 @@ describe('PropTypes validation', () => {
       formAction: 'Submit',
     }
 
-    render(<CollectFormWrapper token="test-token" limitsApiUrl="/api/limits" localeLbl={localeLbl} />)
+    render(<CollectFormWrapper token="test-token" environment="dev" localeLbl={localeLbl} />)
 
     await waitFor(() => {
       expect(screen.getByTestId('collect-form')).toBeInTheDocument()
@@ -218,7 +207,7 @@ describe('PropTypes validation', () => {
 
     const validCardBrands = [{ type: 'visa' }, { type: 'mastercard' }, { type: 'amex' }]
 
-    render(<CollectFormWrapper token="test-token" limitsApiUrl="/api/limits" validCardBrands={validCardBrands} />)
+    render(<CollectFormWrapper token="test-token" environment="dev" validCardBrands={validCardBrands} />)
 
     await waitFor(() => {
       expect(screen.getByTestId('collect-form')).toBeInTheDocument()
@@ -239,7 +228,6 @@ describe('PropTypes validation', () => {
 
     const allProps = {
       token: 'test-token',
-      limitsApiUrl: '/api/limits',
       environment: 'sandbox',
       onError: vi.fn(),
       onSubmit: vi.fn(),
@@ -263,7 +251,7 @@ describe('PropTypes validation', () => {
 
   it('executes default onError function when not provided', () => {
     // Render without onError to trigger default
-    render(<CollectFormWrapper token="" limitsApiUrl="" />)
+    render(<CollectFormWrapper token="" />)
     expect(screen.getByTestId('collect-form')).toBeInTheDocument()
   })
 
@@ -286,7 +274,7 @@ describe('PropTypes validation', () => {
     })
 
     // Render without environment to use default 'dev'
-    render(<CollectFormWrapper token="test-token" limitsApiUrl="/api/limits" />)
+    render(<CollectFormWrapper token="test-token" />)
 
     await waitFor(() => {
       expect(screen.getByTestId('collect-form')).toBeInTheDocument()
@@ -295,13 +283,7 @@ describe('PropTypes validation', () => {
 
   it('uses default token when not provided', () => {
     // Render without token to use default ''
-    render(<CollectFormWrapper limitsApiUrl="/api/limits" />)
-    expect(screen.getByTestId('collect-form')).toBeInTheDocument()
-  })
-
-  it('uses default limitsApiUrl when not provided', () => {
-    // Render without limitsApiUrl to use default ''
-    render(<CollectFormWrapper token="test-token" />)
+    render(<CollectFormWrapper environment="dev" />)
     expect(screen.getByTestId('collect-form')).toBeInTheDocument()
   })
 
