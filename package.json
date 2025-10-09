@@ -1,7 +1,7 @@
 {
   "name": "@h4b-dev/n1-vgs-components",
   "description": "components for secure checkout",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "module": "dist/index.js",
   "main": "dist/index.js",
