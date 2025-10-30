@@ -30,6 +30,13 @@ const useLimitsValidation = ({ token, environment = 'dev' }) => {
       return
     }
 
+    // In sandbox environment, skip limits validation
+    if (environment === 'sandbox') {
+      setCanCreate(true)
+      setLoading(false)
+      return
+    }
+
     const fetchLimits = async () => {
       try {
         const config = getConfig(environment)

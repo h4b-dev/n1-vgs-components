@@ -133,3 +133,79 @@ describe('useLimitsValidation', () => {
     expect(window.fetch).not.toHaveBeenCalled()
   })
 })
+
+describe('useLimitsValidation - Sandbox environment', () => {
+  beforeEach(() => {
+    vi.spyOn(window, 'fetch')
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
+  it('should skip limits validation in sandbox environment', () => {
+    const { result } = renderHook(() => useLimitsValidation({ token: 'test-token', environment: 'sandbox' }))
+
+    expect(result.current.loading).toBe(false)
+    expect(result.current.canCreate).toBe(true)
+    expect(result.current.error).toBe(null)
+    expect(result.current.reason).toBe(null)
+    expect(window.fetch).not.toHaveBeenCalled()
+  })
+
+  it('should require token even in sandbox environment', () => {
+    const { result } = renderHook(() => useLimitsValidation({ token: null, environment: 'sandbox' }))
+
+    expect(result.current.loading).toBe(false)
+    expect(result.current.canCreate).toBe(false)
+    expect(window.fetch).not.toHaveBeenCalled()
+  })
+
+  it('should require token in sandbox with empty token', () => {
+    const { result } = renderHook(() => useLimitsValidation({ token: '', environment: 'sandbox' }))
+
+    expect(result.current.loading).toBe(false)
+    expect(result.current.canCreate).toBe(false)
+    expect(window.fetch).not.toHaveBeenCalled()
+  })
+
+  it('should still validate in dev environment', async () => {
+    window.fetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ limits: { allowed: { canCreateNewCard: true } } }),
+    })
+
+    const { result } = renderHook(() => useLimitsValidation({ token: 'test-token', environment: 'dev' }))
+
+    expect(result.current.loading).toBe(true)
+
+    await waitFor(() => expect(result.current.loading).toBe(false))
+
+    expect(window.fetch).toHaveBeenCalled()
+    expect(result.current.canCreate).toBe(true)
+  })
+
+  it('should still validate in prod environment', async () => {
+    window.fetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ limits: { allowed: { canCreateNewCard: true } } }),
+    })
+
+    const { result } = renderHook(() => useLimitsValidation({ token: 'test-token', environment: 'prod' }))
+
+    expect(result.current.loading).toBe(true)
+
+    await waitFor(() => expect(result.current.loading).toBe(false))
+
+    expect(window.fetch).toHaveBeenCalled()
+    expect(result.current.canCreate).toBe(true)
+  })
+
+  it('should return immediately in sandbox without waiting', () => {
+    const { result } = renderHook(() => useLimitsValidation({ token: 'test-token', environment: 'sandbox' }))
+
+    // In sandbox, these values should be set immediately, no need to wait
+    expect(result.current.loading).toBe(false)
+    expect(result.current.canCreate).toBe(true)
+  })
+})
