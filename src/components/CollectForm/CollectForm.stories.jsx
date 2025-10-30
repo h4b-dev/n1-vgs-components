@@ -58,7 +58,7 @@ export const Dev = () => (
 export const Sandbox = () => (
   <CollectForm
     environment="sandbox"
-    token=""
+    token="test-token"
     onSubmit={(id, httpStatus, httpResponse) => {
       // This will be called when the submit button is pressed.
       // It will be called even on errors

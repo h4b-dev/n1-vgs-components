@@ -299,3 +299,96 @@ describe('PropTypes validation', () => {
     expect(screen.getByTestId('collect-form')).toBeInTheDocument()
   })
 })
+
+describe('Sandbox environment behavior', () => {
+  beforeEach(() => {
+    vi.spyOn(window, 'fetch')
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
+  it('should skip limits validation and render CollectForm directly in sandbox environment', () => {
+    render(<CollectFormWrapper token="test-token" environment="sandbox" />)
+
+    // Should not call fetch in sandbox
+    expect(window.fetch).not.toHaveBeenCalled()
+
+    // Should render CollectForm immediately without loading state
+    expect(screen.queryByText('Loading...')).not.toBeInTheDocument()
+    expect(screen.getByTestId('collect-form')).toBeInTheDocument()
+  })
+
+  it('should always render CollectForm in sandbox even with token', () => {
+    render(<CollectFormWrapper token="test-token" environment="sandbox" />)
+
+    expect(screen.getByTestId('collect-form')).toBeInTheDocument()
+    expect(window.fetch).not.toHaveBeenCalled()
+  })
+
+  it('should not show LimitsMessage in sandbox regardless of limits', () => {
+    render(<CollectFormWrapper token="test-token" environment="sandbox" />)
+
+    expect(screen.queryByText(/limit/i)).not.toBeInTheDocument()
+    expect(screen.getByTestId('collect-form')).toBeInTheDocument()
+  })
+
+  it('should still perform validation in dev environment', async () => {
+    window.fetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ limits: { allowed: { canCreateNewCard: true } } }),
+    })
+
+    render(<CollectFormWrapper token="test-token" environment="dev" />)
+
+    // Should show loading initially
+    expect(screen.getByText('Loading...')).toBeInTheDocument()
+
+    // Should call fetch for dev environment
+    await waitFor(() => {
+      expect(window.fetch).toHaveBeenCalled()
+    })
+
+    await waitFor(() => {
+      expect(screen.getByTestId('collect-form')).toBeInTheDocument()
+    })
+  })
+
+  it('should still perform validation in prod environment', async () => {
+    window.fetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ limits: { allowed: { canCreateNewCard: true } } }),
+    })
+
+    render(<CollectFormWrapper token="test-token" environment="prod" />)
+
+    // Should show loading initially
+    expect(screen.getByText('Loading...')).toBeInTheDocument()
+
+    // Should call fetch for prod environment
+    await waitFor(() => {
+      expect(window.fetch).toHaveBeenCalled()
+    })
+
+    await waitFor(() => {
+      expect(screen.getByTestId('collect-form')).toBeInTheDocument()
+    })
+  })
+
+  it('should pass all props to CollectForm in sandbox environment', () => {
+    const mockProps = {
+      token: 'test-token',
+      environment: 'sandbox',
+      vaultId: 'test-vault',
+      onSubmit: vi.fn(),
+      onError: vi.fn(),
+      onUpdate: vi.fn(),
+    }
+
+    render(<CollectFormWrapper {...mockProps} />)
+
+    expect(screen.getByTestId('collect-form')).toBeInTheDocument()
+    expect(window.fetch).not.toHaveBeenCalled()
+  })
+})
