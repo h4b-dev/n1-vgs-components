@@ -48,7 +48,4 @@ export default defineConfig({
     // tailwindcss(),
     react(),
   ],
-  define: {
-    'process.env': 'import.meta.env',
-  },
 })
