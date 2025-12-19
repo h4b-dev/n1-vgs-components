@@ -120,7 +120,7 @@ const CollectForm = ({
         onErrorCallback={onErrorCallback(onError)}>
         <div className="input">
           <label>{localeLbl.cardName}</label>
-          <TextField name="Name" validations={['required']} css={VGSCollectFieldStyles} placeholder=" " />
+          <TextField name="Name" validations={['required']} css={VGSCollectFieldStyles} placeholder=" " defaultValue="" />
         </div>
         <div className="input">
           <label>{localeLbl.cardNumber}</label>
